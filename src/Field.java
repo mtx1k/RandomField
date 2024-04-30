@@ -54,8 +54,8 @@ public class Field {
     private void createShip(int length) {
         Random random = new Random();
         while (true) {
-            int x = random.nextInt(0, 10 - length);
-            int y = random.nextInt(0, 10 - length);
+            int x = random.nextInt(0, 10);
+            int y = random.nextInt(0, 10);
             if (createShipField(length, x, y)) {
                 break;
             }
@@ -65,8 +65,8 @@ public class Field {
     private boolean createShipField(int length, int x, int y) {
         Random random = new Random();
         ArrayList<Coordinate> coordinates = new ArrayList<>();
-        boolean state = random.nextBoolean();
-        if (state) {
+        int state = random.nextInt(1,5);
+        if (state == 1) {
             if (x + length < 10) {
                 for (int i = 0; i < length; i++) {
                     if (field[x + i][y] != 9) {
@@ -75,7 +75,7 @@ public class Field {
                     coordinates.add(new Coordinate(x + i, y));
                 }
             }
-        } else {
+        } else if (state == 2) {
             if (y + length < 10) {
                 for (int i = 0; i < length; i++) {
                     if (field[x][y + i] != 9) {
@@ -84,6 +84,27 @@ public class Field {
                     coordinates.add(new Coordinate(x, y + i));
                 }
             }
+        }else if(state == 3){
+            if (x - length >= 0) {
+                for (int i = 0; i < length; i++) {
+                    if (field[x - i][y] != 9) {
+                        return false;
+                    }
+                    coordinates.add(new Coordinate(x - i, y));
+                }
+            }
+        } else {
+            if (y - length >= 0) {
+                for (int i = 0; i < length; i++) {
+                    if (field[x][y - i] != 9) {
+                        return false;
+                    }
+                    coordinates.add(new Coordinate(x, y - i));
+                }
+            }
+        }
+        if (coordinates.isEmpty()) {
+            return false;
         }
         addCoordinatesInField(coordinates, length);
         fillAroundShip(coordinates);
