@@ -3,21 +3,11 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Field {
-    private int[][] field = {
-            {0, 0, 0, 1, 0, 0, 2, 2, 0, 0},
-            {0, 3, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 3, 0, 1, 0, 0, 2, 2, 0, 0},
-            {0, 3, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 4, 4, 4, 4, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-            {0, 0, 0, 1, 0, 0, 0, 0, 0, 2},
-            {0, 0, 0, 0, 0, 3, 3, 3, 0, 0},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-
-    };
+    private final int fieldSize = 10;
+    private int[][] field;
 
     public Field() {
+        firstFill();
         randomFieldFill();
     }
 
@@ -26,13 +16,14 @@ public class Field {
     }
 
     private void firstFill() {
+        field = new int[fieldSize][fieldSize];
         for (int[] cell : field) {
             Arrays.fill(cell, 9);
         }
     }
 
     private void randomFieldFill() {
-        firstFill();
+
         for (int i = 4; i > 0; i--) {
             for (int j = 1; j <= 5 - i; j++) {
                 createShip(i);
@@ -42,8 +33,8 @@ public class Field {
     }
 
     private void finishFill() {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < fieldSize; i++) {
+            for (int j = 0; j < fieldSize; j++) {
                 if(field[i][j] == 9) {
                     field[i][j] = 0;
                 }
@@ -54,8 +45,8 @@ public class Field {
     private void createShip(int length) {
         Random random = new Random();
         while (true) {
-            int x = random.nextInt(0, 10);
-            int y = random.nextInt(0, 10);
+            int x = random.nextInt(0, fieldSize);
+            int y = random.nextInt(0, fieldSize);
             if (createShipField(length, x, y)) {
                 break;
             }
@@ -67,7 +58,7 @@ public class Field {
         ArrayList<Coordinate> coordinates = new ArrayList<>();
         int state = random.nextInt(1,5);
         if (state == 1) {
-            if (x + length < 10) {
+            if (x + length < fieldSize) {
                 for (int i = 0; i < length; i++) {
                     if (field[x + i][y] != 9) {
                         return false;
@@ -76,7 +67,7 @@ public class Field {
                 }
             }
         } else if (state == 2) {
-            if (y + length < 10) {
+            if (y + length < fieldSize) {
                 for (int i = 0; i < length; i++) {
                     if (field[x][y + i] != 9) {
                         return false;
